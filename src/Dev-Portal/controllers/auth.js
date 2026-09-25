@@ -1,8 +1,9 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const username_code = process.env.USERNAME;
-const password_code = process.env.PASSWORD;
+const username_code = process.env.ADMIN_USERNAME;
+const password_code = process.env.ADMIN_PASSWORD;
+
 
 const Login = async (req, res) => {
     try {
