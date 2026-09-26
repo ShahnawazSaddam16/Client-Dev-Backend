@@ -39,7 +39,7 @@ const Login = async (req, res) => {
 
 const Me = async (req, res) => {
     try {
-        return res.json({ success: true, user: req.user });
+        return res.json({ success: true, user: req.user, name: "Shahnawaz Saddam Butt" });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ success: false, message: "Server error" });
