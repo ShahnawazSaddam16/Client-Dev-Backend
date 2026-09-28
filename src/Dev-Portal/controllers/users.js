@@ -4,7 +4,7 @@ const addUser = async(req,res)=>{
     try{
         const {username, email, profession} = req.body;
 
-        if(!email || !email || !profession){
+        if(!username || !email || !profession){
             return res.status(401).json({success: false, message: "Please fill all fields"});
         }
 
