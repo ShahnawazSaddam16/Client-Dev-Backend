@@ -1,23 +1,27 @@
 const Users = require("../../models/users");
+const bycrypt = require("bcryptjs");
 
 const addUser = async(req,res)=>{
     try{
-        const {username, email, profession} = req.body;
+        const {username, email, password} = req.body;
 
-        if(!username || !email || !profession){
+        if(!username || !email || !password){
             return res.status(401).json({success: false, message: "Please fill all fields"});
         }
 
         const existingUser = await Users.findOne({email});
 
+
         if(existingUser){
             return res.status(403).json({success: false, message: "User Already Exits"})
         }
 
+        const hashedPassword = await bycrypt.hash(password, 10);
+
         const newuser = await Users.create({
             username,
             email,
-            profession,
+            password: hashedPassword,
         });
 
         await newuser.save();
@@ -42,7 +46,7 @@ const allUsers = async(req,res)=>{
 const editUser = async(req,res)=>{
     try{
         const {id} = req.params;
-        const {username, email, profession} = req.body;
+        const {username, email, password} = req.body;
 
         const user = await Users.findById(id);
 
@@ -60,7 +64,7 @@ const editUser = async(req,res)=>{
 
         if(username) user.username = username;
         if(email) user.email = email;
-        if(profession) user.profession = profession;
+        if(password) user.password = await bycrypt.hash(password, 10);
 
         await user.save();
         return res.status(200).json({success: true, message: "User Updated Successfully"});

@@ -14,10 +14,9 @@ const userSchema = new mongoose.Schema(
             lowercase: true,
             trim: true,
         },
-        profession: {
-            type: String,
+        password: {
+            type: Number,
             required: true,
-            trim: true,
         },
     },
     { timestamps: true }
