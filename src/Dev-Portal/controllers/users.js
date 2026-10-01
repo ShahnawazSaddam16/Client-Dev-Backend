@@ -16,12 +16,11 @@ const addUser = async(req,res)=>{
             return res.status(403).json({success: false, message: "User Already Exits"})
         }
 
-        const hashedPassword = await bycrypt.hash(password, 10);
 
         const newuser = await Users.create({
             username,
             email,
-            password: hashedPassword,
+            password,
         });
 
         await newuser.save();
@@ -64,7 +63,7 @@ const editUser = async(req,res)=>{
 
         if(username) user.username = username;
         if(email) user.email = email;
-        if(password) user.password = await bycrypt.hash(password, 10);
+        if(password) user.password = password;
 
         await user.save();
         return res.status(200).json({success: true, message: "User Updated Successfully"});
