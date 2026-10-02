@@ -24,4 +24,4 @@ const addProject = async(req,res)=>{
     }
 }
 
-module.exports = {}
+module.exports = {addProject}

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const dbConnection = require("./src/config/mongoDB");
 const authRoutes = require("./src/Dev-Portal/routes/authRoutes");
 const userRoutes = require("./src/Dev-Portal/routes/userRoutes");
+const projectRoutes = require("./src/Dev-Portal/routes/projectRoutes");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -24,7 +25,7 @@ app.get("/", (req,res)=>{
 
 app.use("/api/dev/auth", authRoutes);
 app.use("/api/dev/users", userRoutes);
-
+app.use("/api/dev/projects", projectRoutes);
 
 app.listen(PORT,(err)=>{
     if(err){

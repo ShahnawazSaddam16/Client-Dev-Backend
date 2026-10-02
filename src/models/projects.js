@@ -6,9 +6,9 @@ const projectschema = new mongoose.Schema(
     email: { type: String, lowercase: true, trim: true, required: true },
     projectType: { type: String, required: true },
     projectDuration: { type: Date, required: true },
-    projectProgress: { type: String, required: true },
-    projectImages: { type: String, required: true },
-    projectLinks: { type: String, required: true },
+    projectProgress: { type: String, default: ""},
+    projectImages: { type: String, default: ""},
+    projectLinks: { type: String, default: ""},
   },
   { timestamps: true },
 );
