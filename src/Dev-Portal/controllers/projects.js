@@ -44,4 +44,4 @@ const allProjects = async(req,res)=>{
     }
 }
 
-module.exports = {addProject}
+module.exports = {addProject, allProjects}
