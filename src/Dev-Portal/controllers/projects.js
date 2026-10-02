@@ -28,7 +28,7 @@ const addProject = async(req,res)=>{
         await newProject.save();
         return res.status(200).json({success: true, message: "New Project Created"});
     } catch(err){
-        console.log(err)
+        console.error(err)
         return res.status(500).json({success: false, message: err});
     }
 }
@@ -38,8 +38,9 @@ const allProjects = async(req,res)=>{
         const allprojects = await Projects.find();
         const totalProjects = await Projects.countDocuments();
 
-        return res.status(200).json({success: true, allProjects, totalProjects});
+        return res.status(200).json({success: true, allprojects, totalProjects});
     } catch(err){
+        console.error(err);
         return res.status(500).json({success: false, message: err});
     }
 }
