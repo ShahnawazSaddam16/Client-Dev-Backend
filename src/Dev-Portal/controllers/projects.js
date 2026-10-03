@@ -71,4 +71,56 @@ const getProjectById = async(req,res)=>{
     }
 }
 
-module.exports = {addProject, allProjects, getProjectById}
+const editProject = async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const {
+            projectName,
+            projectType,
+            projectDuration,
+            projectProgress,
+            projectImages,
+            projectLinks,
+            status,
+        } = req.body;
+
+        const project = await Projects.findById(id);
+
+        if(!project){
+            return res.status(404).json({success: false, message: "Project Not Found"});
+        }
+
+        if(projectName !== undefined) project.projectName = projectName;
+        if(projectType !== undefined) project.projectType = projectType;
+        if(projectDuration !== undefined) project.projectDuration = projectDuration;
+        if(projectProgress !== undefined) project.projectProgress = projectProgress;
+        if(projectImages !== undefined) project.projectImages = projectImages;
+        if(projectLinks !== undefined) project.projectLinks = projectLinks;
+        if(status !== undefined) project.status = status;
+
+        await project.save();
+        return res.status(200).json({success: true, message: "Project Updated Successfully"});
+    } catch(err){
+        console.error(err);
+        return res.status(500).json({success: false, message: err});
+    }
+}
+
+const deleteProject = async(req,res)=>{
+    try{
+        const {id} = req.params;
+
+        const project = await Projects.findByIdAndDelete(id);
+
+        if(!project){
+            return res.status(404).json({success: false, message: "Project Not Found"});
+        }
+
+        return res.status(200).json({success: true, message: "Project Deleted Successfully"});
+    } catch(err){
+        console.error(err);
+        return res.status(500).json({success: false, message: err});
+    }
+}
+
+module.exports = {addProject, allProjects, getProjectById, editProject, deleteProject}
