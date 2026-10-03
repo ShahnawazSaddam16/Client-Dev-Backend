@@ -92,12 +92,41 @@ const editProject = async(req,res)=>{
         if(projectType !== undefined) project.projectType = projectType;
         if(projectDuration !== undefined) project.projectDuration = projectDuration;
         if(projectProgress !== undefined) project.projectProgress = projectProgress;
-        if(req.imageUrls && req.imageUrls.length) project.projectImages = req.imageUrls;
+        if(req.imageUrls && req.imageUrls.length) project.projectImages = [...project.projectImages, ...req.imageUrls];
         if(projectLinks !== undefined) project.projectLinks = projectLinks;
         if(status !== undefined) project.status = status;
 
         await project.save();
         return res.status(200).json({success: true, message: "Project Updated Successfully"});
+    } catch(err){
+        console.error(err);
+        return res.status(500).json({success: false, message: err});
+    }
+}
+
+const deleteProjectImage = async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const {imageUrl} = req.body;
+
+        if(!imageUrl){
+            return res.status(401).json({success: false, message: "Please provide imageUrl"});
+        }
+
+        const project = await Projects.findById(id);
+
+        if(!project){
+            return res.status(404).json({success: false, message: "Project Not Found"});
+        }
+
+        if(!project.projectImages.includes(imageUrl)){
+            return res.status(404).json({success: false, message: "Image Not Found"});
+        }
+
+        project.projectImages = project.projectImages.filter((img) => img !== imageUrl);
+
+        await project.save();
+        return res.status(200).json({success: true, message: "Image Deleted Successfully", projectImages: project.projectImages});
     } catch(err){
         console.error(err);
         return res.status(500).json({success: false, message: err});
@@ -121,4 +150,4 @@ const deleteProject = async(req,res)=>{
     }
 }
 
-module.exports = {addProject, allProjects, getProjectById, editProject, deleteProject}
+module.exports = {addProject, allProjects, getProjectById, editProject, deleteProjectImage, deleteProject}
