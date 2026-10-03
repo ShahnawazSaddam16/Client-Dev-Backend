@@ -31,6 +31,7 @@ const addProject = async(req,res)=>{
             projectDuration,
             projectProgress,
             projectImages,
+            status,
             projectLinks,
         });
         await newProject.save();

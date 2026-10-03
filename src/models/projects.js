@@ -10,6 +10,7 @@ const projectschema = new mongoose.Schema(
     projectProgress: { type: String, default: ""},
     projectImages: { type: String, default: ""},
     projectLinks: { type: String, default: ""},
+    status: {type: String, default: "Not Started"},
   },
   { timestamps: true },
 );
