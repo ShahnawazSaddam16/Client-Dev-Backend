@@ -9,7 +9,6 @@ const addProject = async(req,res)=>{
             projectType,
             projectDuration,
             projectProgress = "",
-            projectImages = "",
             projectLinks = "",
         } = req.body;
 
@@ -30,7 +29,7 @@ const addProject = async(req,res)=>{
             projectType,
             projectDuration,
             projectProgress,
-            projectImages,
+            projectImages: req.imageUrls,
             status,
             projectLinks,
         });
@@ -79,7 +78,6 @@ const editProject = async(req,res)=>{
             projectType,
             projectDuration,
             projectProgress,
-            projectImages,
             projectLinks,
             status,
         } = req.body;
@@ -94,7 +92,7 @@ const editProject = async(req,res)=>{
         if(projectType !== undefined) project.projectType = projectType;
         if(projectDuration !== undefined) project.projectDuration = projectDuration;
         if(projectProgress !== undefined) project.projectProgress = projectProgress;
-        if(projectImages !== undefined) project.projectImages = projectImages;
+        if(req.imageUrls && req.imageUrls.length) project.projectImages = req.imageUrls;
         if(projectLinks !== undefined) project.projectLinks = projectLinks;
         if(status !== undefined) project.status = status;
 
