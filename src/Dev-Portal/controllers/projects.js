@@ -1,4 +1,5 @@
 const Projects = require("../../models/projects");
+const Users = require("../../models/users");
 
 const addProject = async(req,res)=>{
     try{
@@ -16,8 +17,15 @@ const addProject = async(req,res)=>{
             return res.status(401).json({success: false, message: "Please fill all fields"});
         }
 
+        const user = await Users.findOne({email});
+
+        if(!user){
+            return res.status(404).json({success: false, message: "User Not Found"});
+        }
+
         const newProject = await Projects.create({
             projectName,
+            username: user.username,
             email,
             projectType,
             projectDuration,
