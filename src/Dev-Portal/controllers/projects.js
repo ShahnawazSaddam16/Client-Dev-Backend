@@ -9,7 +9,8 @@ const addProject = async(req,res)=>{
             projectType,
             projectDuration,
             projectProgress = "",
-            projectLinks = "",
+            projectLinks = [],
+            status = "Not Started",
         } = req.body;
 
         if(!projectName || !email || !projectType || !projectDuration){
@@ -22,22 +23,29 @@ const addProject = async(req,res)=>{
             return res.status(404).json({success: false, message: "User Not Found"});
         }
 
+        const normalizedLinks = Array.isArray(projectLinks)
+            ? projectLinks
+            : projectLinks
+                ? [projectLinks]
+                : [];
+
         const newProject = await Projects.create({
             projectName,
             username: user.username,
             email,
+            userId: user._id,
             projectType,
             projectDuration,
             projectProgress,
-            projectImages: req.imageUrls,
+            projectImages: req.imageUrls || [],
             status,
-            projectLinks,
+            projectLinks: normalizedLinks,
         });
-        await newProject.save();
-        return res.status(200).json({success: true, message: "New Project Created"});
+
+        return res.status(200).json({success: true, message: "New Project Created", project: newProject});
     } catch(err){
         console.error(err)
-        return res.status(500).json({success: false, message: err});
+        return res.status(500).json({success: false, message: err.message || err});
     }
 }
 
