@@ -12,25 +12,32 @@ const PORT = process.env.PORT;
 
 // Middleware
 app.use(express.json());
-app.use(cors({origin: "http://localhost:3000", credentials: true}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://dev-portal.buttnetworks.com"],
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 
 // dbConnection
 dbConnection();
 
 // Routes
-app.get("/", (req,res)=>{
-    res.status(200).json({success: true, message: "Server Running Successfully"});
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .json({ success: true, message: "Server Running Successfully" });
 });
 
 app.use("/api/dev/auth", authRoutes);
 app.use("/api/dev/users", userRoutes);
 app.use("/api/dev/projects", projectRoutes);
 
-app.listen(PORT,(err)=>{
-    if(err){
-      console.error(err);
-    } else{
-        console.log(`Server Running at ${PORT} ✅✅`);
-    }
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(`Server Running at ${PORT} ✅✅`);
+  }
 });
