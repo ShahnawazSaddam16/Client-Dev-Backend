@@ -4,6 +4,7 @@ const limiter = require("../../utils/limiter");
 const authMiddleware = require("../middleware/authMiddleware");
 const {Login, Me, Logout} = require("../controllers/auth");
 
-router.post("/login", authMiddleware, limiter, Login);
+router.post("/login", limiter, Login);
+router.get("/me", authMiddleware, limiter, Logout);
 
 module.exports = router;
