@@ -22,6 +22,7 @@ const Login = async (req, res) => {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
@@ -51,6 +52,7 @@ const Logout = async (req, res) => {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
+        path:"/"
     });
     return res.status(200).json({ success: true, message: "Logged out successfully" });
 };
