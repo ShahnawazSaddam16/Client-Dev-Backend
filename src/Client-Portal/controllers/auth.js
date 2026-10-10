@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const Users = require("../../models/users");
 
 const Login = async (req, res) => {
@@ -13,9 +14,21 @@ const Login = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid email or password" });
         }
 
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+        });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
         return res.status(200).json({
             success: true,
             message: "Login Successful",
+            token,
             user: {
                 _id: user._id,
                 username: user.username,
@@ -29,4 +42,17 @@ const Login = async (req, res) => {
     }
 };
 
-module.exports = { Login };
+const Me = async (req, res) => {
+    return res.status(200).json({ success: true, user: req.user });
+};
+
+const Logout = async (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+    });
+    return res.status(200).json({ success: true, message: "Logged out successfully" });
+};
+
+module.exports = { Login, Me, Logout };
