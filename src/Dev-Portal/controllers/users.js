@@ -29,10 +29,10 @@ const addUser = async (req, res) => {
 
 const allUsers = async (req, res) => {
     try {
-        const users = await Users.find();
+        const allusers = await Users.find();
         const totalUsers = await Users.countDocuments();
 
-        return res.status(200).json({ success: true, users, totalUsers });
+        return res.status(200).json({ success: true, allusers, totalUsers });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ success: false, message: err.message || err });
