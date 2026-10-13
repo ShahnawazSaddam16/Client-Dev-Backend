@@ -6,5 +6,6 @@ const {Login, Me, Logout} = require("../controllers/auth");
 
 router.post("/login", limiter, Login);
 router.get("/me", authMiddleware, limiter, Me);
+router.post("/logout", authMiddleware, limiter, Logout);
 
 module.exports = router;
