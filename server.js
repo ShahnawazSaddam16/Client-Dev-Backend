@@ -5,9 +5,10 @@ const cookieParser = require("cookie-parser");
 const dbConnection = require("./src/config/mongoDB");
 const devauthRoutes = require("./src/Dev-Portal/routes/authRoutes");
 const userRoutes = require("./src/Dev-Portal/routes/userRoutes");
-const projectRoutes = require("./src/Dev-Portal/routes/projectRoutes");
+const devprojectRoutes = require("./src/Dev-Portal/routes/projectRoutes");
 
 const clientauthRoutes = require("./src/Client-Portal/routes/authRoutes");
+const clientprojectsRoutes = require("./src/Client-Portal/routes/projectRoutes");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -34,9 +35,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/dev/auth", devauthRoutes);
 app.use("/api/dev/users", userRoutes);
-app.use("/api/dev/projects", projectRoutes);
+app.use("/api/dev/projects", devprojectRoutes);
 
 app.use("/api/client/auth", clientauthRoutes);
+app.use("/api/client/projects", clientprojectsRoutes);
 
 app.listen(PORT, (err) => {
   if (err) {
