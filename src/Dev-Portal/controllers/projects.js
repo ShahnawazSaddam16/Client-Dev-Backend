@@ -8,7 +8,7 @@ const addProject = async(req,res)=>{
             email,
             projectType,
             projectDuration,
-            projectProgress = "",
+            projectProgress = [],
             projectLinks = [],
             status = "Not Started",
         } = req.body;
@@ -29,6 +29,12 @@ const addProject = async(req,res)=>{
                 ? [projectLinks]
                 : [];
 
+        const normalizedProgress = Array.isArray(projectProgress)
+            ? projectProgress
+            : projectProgress
+                ? [projectProgress]
+                : [];
+
         const newProject = await Projects.create({
             projectName,
             username: user.username,
@@ -36,7 +42,7 @@ const addProject = async(req,res)=>{
             userId: user._id,
             projectType,
             projectDuration,
-            projectProgress,
+            projectProgress: normalizedProgress,
             projectImages: req.imageUrls || [],
             status,
             projectLinks: normalizedLinks,
@@ -99,7 +105,13 @@ const editProject = async(req,res)=>{
         if(projectName !== undefined) project.projectName = projectName;
         if(projectType !== undefined) project.projectType = projectType;
         if(projectDuration !== undefined) project.projectDuration = projectDuration;
-        if(projectProgress !== undefined) project.projectProgress = projectProgress;
+        if(projectProgress !== undefined){
+            project.projectProgress = Array.isArray(projectProgress)
+                ? projectProgress
+                : projectProgress
+                    ? [projectProgress]
+                    : [];
+        }
         if(req.imageUrls && req.imageUrls.length) project.projectImages = [...project.projectImages, ...req.imageUrls];
         if(projectLinks !== undefined) project.projectLinks = projectLinks;
         if(status !== undefined) project.status = status;
