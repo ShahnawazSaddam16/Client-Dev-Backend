@@ -8,7 +8,7 @@ const projectschema = new mongoose.Schema(
     email: { type: String, lowercase: true, trim: true, required: true },
     projectType: { type: String, required: true },
     projectDuration: { type: Date, required: true },
-    projectProgress: { type: [String], default: ""},
+    projectProgress: { type: [String], default: []},
     projectImages: { type: [String], default: []},
     projectLinks: { type: [String], default: []},
     status: {type: String, default: "Not Started"},
