@@ -4,8 +4,9 @@ const userNotification = async(req,res)=>{
     try{
         const userId = req.user._id;
         const notifications = await Messages.find({userId});
-        return res.status(200).json({success: false, data: notifications})
+        return res.status(200).json({success: true, data: notifications})
     } catch(err){
+        console.error(err);
         return res.status(500).json({success: false, message: err});
     }
 }
