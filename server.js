@@ -6,10 +6,11 @@ const dbConnection = require("./src/config/mongoDB");
 const devauthRoutes = require("./src/Dev-Portal/routes/authRoutes");
 const userRoutes = require("./src/Dev-Portal/routes/userRoutes");
 const devprojectRoutes = require("./src/Dev-Portal/routes/projectRoutes");
-const messageRoutes = require("./src/Dev-Portal/routes/messageRoutes");
+const devmessageRoutes = require("./src/Dev-Portal/routes/messageRoutes");
 
 const clientauthRoutes = require("./src/Client-Portal/routes/authRoutes");
 const clientprojectsRoutes = require("./src/Client-Portal/routes/projectRoutes");
+const clientmessageRoutes = require("./src/Client-Portal/routes/messagesRoutes");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -37,11 +38,11 @@ app.get("/", (req, res) => {
 app.use("/api/dev/auth", devauthRoutes);
 app.use("/api/dev/users", userRoutes);
 app.use("/api/dev/projects", devprojectRoutes);
-app.use("/api/dev/messages", messageRoutes);
+app.use("/api/dev/messages", devmessageRoutes);
 
 app.use("/api/client/auth", clientauthRoutes);
 app.use("/api/client/projects", clientprojectsRoutes);
-
+app.use("/api/client/messages", clientmessageRoutes);
 
 app.listen(PORT, (err) => {
   if (err) {
