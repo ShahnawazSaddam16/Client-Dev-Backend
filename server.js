@@ -1,6 +1,4 @@
 const express = require("express");
-const http = require("http");
-const { Server } = require("socket.io");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -15,22 +13,7 @@ const clientprojectsRoutes = require("./src/Client-Portal/routes/projectRoutes")
 const clientmessageRoutes = require("./src/Client-Portal/routes/messagesRoutes");
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001", "https://dev-portal.buttnetworks.com"],
-    credentials: true,
-  },
-});
 const PORT = process.env.PORT;
-
-app.set("io", io);
-
-io.on("connection", (socket) => {
-  socket.on("join", (userId) => {
-    socket.join(`user:${userId}`);
-  });
-});
 
 // Middleware
 app.use(express.json());
@@ -61,7 +44,7 @@ app.use("/api/client/auth", clientauthRoutes);
 app.use("/api/client/projects", clientprojectsRoutes);
 app.use("/api/client/messages", clientmessageRoutes);
 
-server.listen(PORT, (err) => {
+app.listen(PORT, (err) => {
   if (err) {
     console.error(err);
   } else {

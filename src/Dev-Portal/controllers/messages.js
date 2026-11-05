@@ -20,11 +20,6 @@ const sentMessage = async (req, res) => {
             message,
         });
 
-        const io = req.app.get("io");
-        if (io) {
-            io.to(`user:${user._id}`).emit("notification:new", newMessage);
-        }
-
         return res.status(201).json({ success: true, message: "Message Sent Successfully", data: newMessage });
     } catch (err) {
         console.error(err);
