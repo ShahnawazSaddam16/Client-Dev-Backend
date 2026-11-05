@@ -19,6 +19,10 @@ const deleteNotification = async(req,res)=>{
         if(!notification){
             return res.status(404).json({success: false, message: "Notification not found"});
         }
+        const io = req.app.get("io");
+        if(io){
+            io.to(`user:${userId}`).emit("notification:deleted", {id});
+        }
         return res.status(200).json({success: true, message: "Notification deleted"});
     } catch(err){
         console.error(err);
