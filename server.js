@@ -1,5 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config();
+
+const validateEnv = require("./src/config/validateEnv");
+validateEnv();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dbConnection = require("./src/config/mongoDB");
