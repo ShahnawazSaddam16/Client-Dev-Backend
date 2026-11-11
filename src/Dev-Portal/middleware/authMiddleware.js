@@ -1,9 +1,11 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
+const COOKIE_NAME = process.env.DEV_COOKIE_NAME || "dev_token";
+
 const authMiddleware = (req, res, next) => {
     try {
-        let token = req.cookies?.token;
+        let token = req.cookies?.[COOKIE_NAME];
 
         if (!token && req.headers.authorization?.startsWith("Bearer ")) {
             token = req.headers.authorization.split(" ")[1];

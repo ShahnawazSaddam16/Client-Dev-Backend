@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 const username_code = process.env.ADMIN_USERNAME;
 const password_code = process.env.ADMIN_PASSWORD;
 
+const isProduction = process.env.NODE_ENV === "production";
+const COOKIE_NAME = process.env.DEV_COOKIE_NAME || "dev_token";
+const COOKIE_DOMAIN = isProduction ? process.env.DEV_COOKIE_DOMAIN : undefined;
 
 const Login = async (req, res) => {
     try {
@@ -23,10 +26,12 @@ const Login = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token, {
+        res.cookie(COOKIE_NAME, token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            path: "/",
+            domain: COOKIE_DOMAIN,
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -48,10 +53,12 @@ const Me = async (req, res) => {
 
 const Logout = async (req, res) => {
     try {
-        res.clearCookie("token", {
+        res.clearCookie(COOKIE_NAME, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
+            path: "/",
+            domain: COOKIE_DOMAIN,
         });
         return res.json({ success: true, message: "Logged out successfully" });
     } catch (err) {

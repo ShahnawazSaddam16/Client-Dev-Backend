@@ -1,5 +1,10 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Users = require("../../models/users");
+
+const isProduction = process.env.NODE_ENV === "production";
+const COOKIE_NAME = process.env.CLIENT_COOKIE_NAME || "client_token";
+const COOKIE_DOMAIN = isProduction ? process.env.CLIENT_COOKIE_DOMAIN : undefined;
 
 const Login = async (req, res) => {
     try {
@@ -18,11 +23,12 @@ const Login = async (req, res) => {
             expiresIn: process.env.JWT_EXPIRES_IN || "7d",
         });
 
-        res.cookie("token", token, {
+        res.cookie(COOKIE_NAME, token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             path: "/",
+            domain: COOKIE_DOMAIN,
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
@@ -48,11 +54,12 @@ const Me = async (req, res) => {
 };
 
 const Logout = async (req, res) => {
-    res.clearCookie("token", {
+    res.clearCookie(COOKIE_NAME, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        path:"/"
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
+        domain: COOKIE_DOMAIN,
     });
     return res.status(200).json({ success: true, message: "Logged out successfully" });
 };
