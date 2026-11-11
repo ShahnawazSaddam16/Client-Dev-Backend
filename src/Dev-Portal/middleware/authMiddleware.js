@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
     try {
-        let token = req.cookies?.dev_token || req.cookies?.token;
+        let token = req.cookies?.token;
 
         if (!token && req.headers.authorization?.startsWith("Bearer ")) {
             token = req.headers.authorization.split(" ")[1];
@@ -17,7 +17,7 @@ const authMiddleware = (req, res, next) => {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.DEV_JWT_SECRET);
         req.user = decoded;
         next();
     } catch (err) {
