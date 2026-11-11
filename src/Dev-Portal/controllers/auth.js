@@ -23,11 +23,14 @@ const Login = async (req, res) => {
             { expiresIn: "1d" }
         );
 
+        const isProduction = process.env.NODE_ENV === "production";
+
         res.cookie("dev_token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             path: "/",
+            ...(isProduction ? { domain: ".buttnetworks.com" } : {}),
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -49,11 +52,14 @@ const Me = async (req, res) => {
 
 const Logout = async (req, res) => {
     try {
+        const isProduction = process.env.NODE_ENV === "production";
+
         res.clearCookie("dev_token", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             path: "/",
+            ...(isProduction ? { domain: ".buttnetworks.com" } : {}),
         });
         return res.json({ success: true, message: "Logged out successfully" });
     } catch (err) {
