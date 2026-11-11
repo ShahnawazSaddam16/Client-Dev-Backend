@@ -15,8 +15,10 @@ const clientmessageRoutes = require("./src/Client-Portal/routes/messagesRoutes")
 const app = express();
 const PORT = process.env.PORT;
 
+
 // Middleware
 app.use(express.json());
+app.set('trust proxy', 1)
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:3001", "https://dev-portal.buttnetworks.com", "https://client-portal.buttnetworks.com"],
