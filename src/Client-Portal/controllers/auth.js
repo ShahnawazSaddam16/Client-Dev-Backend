@@ -18,7 +18,7 @@ const Login = async (req, res) => {
             expiresIn: process.env.JWT_EXPIRES_IN || "7d",
         });
 
-        res.cookie("token", token, {
+        res.cookie("client_token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
@@ -48,7 +48,7 @@ const Me = async (req, res) => {
 };
 
 const Logout = async (req, res) => {
-    res.clearCookie("token", {
+    res.clearCookie("client_token", {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
