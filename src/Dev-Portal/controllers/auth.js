@@ -30,7 +30,6 @@ const Login = async (req, res) => {
             secure: isProduction,
             sameSite: isProduction ? "none" : "lax",
             path: "/",
-            ...(isProduction ? { domain: "dev-portal.buttnetworks.com" } : {}),
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -59,7 +58,6 @@ const Logout = async (req, res) => {
             secure: isProduction,
             sameSite: isProduction ? "none" : "lax",
             path: "/",
-            ...(isProduction ? { domain: "dev-portal.buttnetworks.com" } : {}),
         });
         return res.json({ success: true, message: "Logged out successfully" });
     } catch (err) {
