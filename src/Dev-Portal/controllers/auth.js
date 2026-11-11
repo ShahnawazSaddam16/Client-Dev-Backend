@@ -19,17 +19,14 @@ const Login = async (req, res) => {
 
         const token = jwt.sign(
             { username },
-            process.env.JWT_SECRET,
+            process.env.DEV_JWT_SECRET,
             { expiresIn: "1d" }
         );
 
-        const isProduction = process.env.NODE_ENV === "production";
-
-        res.cookie("dev_token", token, {
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? "none" : "lax",
-            path: "/",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -51,13 +48,10 @@ const Me = async (req, res) => {
 
 const Logout = async (req, res) => {
     try {
-        const isProduction = process.env.NODE_ENV === "production";
-
-        res.clearCookie("dev_token", {
+        res.clearCookie("token", {
             httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? "none" : "lax",
-            path: "/",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
         });
         return res.json({ success: true, message: "Logged out successfully" });
     } catch (err) {
