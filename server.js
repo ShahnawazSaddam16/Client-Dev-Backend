@@ -19,7 +19,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001", "https://dev-portal.buttnetworks.com"],
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://dev-portal.buttnetworks.com", "https://client-portal.buttnetworks.com"],
     credentials: true,
   }),
 );
