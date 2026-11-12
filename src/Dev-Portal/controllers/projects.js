@@ -59,8 +59,9 @@ const allProjects = async(req,res)=>{
     try{
         const allprojects = await Projects.find();
         const totalProjects = await Projects.countDocuments();
+        const completedProjects = await Projects.countDocuments({status: "Completed"});
 
-        return res.status(200).json({success: true, allprojects, totalProjects});
+        return res.status(200).json({success: true, allprojects, totalProjects, completedProjects});
     } catch(err){
         console.error(err);
         return res.status(500).json({success: false, message: err});
