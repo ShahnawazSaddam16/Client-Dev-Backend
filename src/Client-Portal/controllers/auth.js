@@ -6,6 +6,19 @@ const isProduction = process.env.NODE_ENV === "production";
 const COOKIE_NAME = process.env.CLIENT_COOKIE_NAME || "client_token";
 const COOKIE_DOMAIN = isProduction ? process.env.CLIENT_COOKIE_DOMAIN : undefined;
 
+const getCookieOptions = (req) => {
+    const isSecureCookie = isProduction && (req.secure || req.headers["x-forwarded-proto"] === "https");
+
+    return {
+        httpOnly: true,
+        secure: isSecureCookie,
+        sameSite: isSecureCookie ? "none" : "lax",
+        path: "/",
+        domain: isSecureCookie ? COOKIE_DOMAIN : undefined,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    };
+};
+
 const Login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -23,14 +36,7 @@ const Login = async (req, res) => {
             expiresIn: process.env.JWT_EXPIRES_IN || "7d",
         });
 
-        res.cookie(COOKIE_NAME, token, {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? "none" : "lax",
-            path: "/",
-            domain: COOKIE_DOMAIN,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        });
+        res.cookie(COOKIE_NAME, token, getCookieOptions(req));
 
         return res.status(200).json({
             success: true,
@@ -54,12 +60,14 @@ const Me = async (req, res) => {
 };
 
 const Logout = async (req, res) => {
+    const isSecureCookie = isProduction && (req.secure || req.headers["x-forwarded-proto"] === "https");
+
     res.clearCookie(COOKIE_NAME, {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: isSecureCookie,
+        sameSite: isSecureCookie ? "none" : "lax",
         path: "/",
-        domain: COOKIE_DOMAIN,
+        domain: isSecureCookie ? COOKIE_DOMAIN : undefined,
     });
     return res.status(200).json({ success: true, message: "Logged out successfully" });
 };
