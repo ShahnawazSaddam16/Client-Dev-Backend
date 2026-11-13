@@ -57,7 +57,7 @@ const addProject = async(req,res)=>{
 
 const allProjects = async(req,res)=>{
     try{
-        const allprojects = await Projects.find();
+        const allprojects = await Projects.find().sort({createdAt: -1});
         const totalProjects = await Projects.countDocuments();
         const completedProjects = await Projects.countDocuments({status: "Completed"});
 

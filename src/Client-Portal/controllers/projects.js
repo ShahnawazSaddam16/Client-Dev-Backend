@@ -4,7 +4,7 @@ const userProjects = async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const userproject = await Projects.find({ userId });
+        const userproject = await Projects.find({ userId }).sort({createdAt: -1});
         const totalProjects = userproject.length;
 
         const ongoingProjects = userproject.filter((p) => p.status === "In Progress");
