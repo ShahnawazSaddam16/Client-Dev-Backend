@@ -12,6 +12,7 @@ const userRoutes = require("./src/Dev-Portal/routes/userRoutes");
 const devprojectRoutes = require("./src/Dev-Portal/routes/projectRoutes");
 const devnotificationRoutes = require("./src/Dev-Portal/routes/notificationRoutes");
 const devchatmessagesRoutes = require("./src/Dev-Portal/routes/chat-messagesRoutes");
+const devquoteRoutes = require("./src/Dev-Portal/routes/quotesRoutes");
 
 const clientauthRoutes = require("./src/Client-Portal/routes/authRoutes");
 const clientprojectsRoutes = require("./src/Client-Portal/routes/projectRoutes");
@@ -49,6 +50,7 @@ app.use("/api/dev/users", userRoutes);
 app.use("/api/dev/projects", devprojectRoutes);
 app.use("/api/dev/notifications", devnotificationRoutes);
 app.use("/api/dev/messages", devchatmessagesRoutes);
+app.use("/api/dev/quotes", devquoteRoutes);
 
 app.use("/api/client/auth", clientauthRoutes);
 app.use("/api/client/projects", clientprojectsRoutes);
