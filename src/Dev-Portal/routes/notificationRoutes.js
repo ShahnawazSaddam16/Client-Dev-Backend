@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const limiter = require("../../utils/limiter");
 const authMiddleware = require("../middleware/authMiddleware");
-const {sentMessage} = require("../controllers/messages");
+const {sentNotification} = require("../controllers/notification");
 
-router.post("/send-message", authMiddleware, limiter, sentMessage);
+router.post("/send-notification", authMiddleware, limiter, sentNotification);
 
 module.exports = router;

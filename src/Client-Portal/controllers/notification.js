@@ -1,9 +1,9 @@
-const Messages = require("../../models/messages");
+const Notifications = require("../../models/notification");
 
 const userNotification = async(req,res)=>{
     try{
         const userId = req.user._id;
-        const notifications = await Messages.find({userId});
+        const notifications = await Notifications.find({userId});
         return res.status(200).json({success: true, data: notifications})
     } catch(err){
         console.error(err);
@@ -15,7 +15,7 @@ const deleteNotification = async(req,res)=>{
     try{
         const userId = req.user._id;
         const { id } = req.params;
-        const notification = await Messages.findOneAndDelete({_id: id, userId});
+        const notification = await Notifications.findOneAndDelete({_id: id, userId});
         if(!notification){
             return res.status(404).json({success: false, message: "Notification not found"});
         }

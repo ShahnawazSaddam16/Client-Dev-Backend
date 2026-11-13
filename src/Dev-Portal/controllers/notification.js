@@ -1,7 +1,7 @@
-const Messages = require("../../models/messages");
+const Notifications = require("../../models/notification");
 const Users = require("../../models/users");
 
-const sentMessage = async (req, res) => {
+const sentNotification = async (req, res) => {
     try {
         const { email, message } = req.body;
 
@@ -14,7 +14,7 @@ const sentMessage = async (req, res) => {
             return res.status(404).json({ success: false, message: "User Not Found" });
         }
 
-        const newMessage = await Messages.create({
+        const newMessage = await Notifications.create({
             userId: user._id,
             email,
             message,
@@ -27,4 +27,4 @@ const sentMessage = async (req, res) => {
     }
 };
 
-module.exports = { sentMessage };
+module.exports = { sentNotification };

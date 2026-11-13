@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const limiter = require("../../utils/limiter");
 const authMiddleware = require("../middleware/authMiddleware");
-const {userNotification, deleteNotification} = require("../controllers/messages");
+const {userNotification, deleteNotification} = require("../controllers/notification");
 
 router.get("/user-notification", limiter, authMiddleware, userNotification);
 router.delete("/delete-notification/:id", limiter, authMiddleware, deleteNotification);
