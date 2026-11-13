@@ -4,6 +4,7 @@ const userNotification = async(req,res)=>{
     try{
         const userId = req.user._id;
         const notifications = await Notifications.find({userId});
+        const totalNotifications = await Notifications.countDocuments({userId});
         return res.status(200).json({success: true, data: notifications})
     } catch(err){
         console.error(err);

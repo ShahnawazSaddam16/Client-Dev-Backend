@@ -15,6 +15,7 @@ const devnotificationRoutes = require("./src/Dev-Portal/routes/notificationRoute
 const clientauthRoutes = require("./src/Client-Portal/routes/authRoutes");
 const clientprojectsRoutes = require("./src/Client-Portal/routes/projectRoutes");
 const clientnotificationRoutes = require("./src/Client-Portal/routes/notificationsRoutes");
+const clientmessagesRoutes = require("./src/Client-Portal/routes/chat-messagesRoutes");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -49,6 +50,7 @@ app.use("/api/dev/notifications", devnotificationRoutes);
 app.use("/api/client/auth", clientauthRoutes);
 app.use("/api/client/projects", clientprojectsRoutes);
 app.use("/api/client/notifications", clientnotificationRoutes);
+app.use("/api/client/messages", clientmessagesRoutes);
 
 app.listen(PORT, (err) => {
   if (err) {
