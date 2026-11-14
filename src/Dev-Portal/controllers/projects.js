@@ -1,6 +1,6 @@
 const Projects = require("../../models/projects");
 const Users = require("../../models/users");
-const {sendProjectUpdateEmail} = require("../../utils/email");
+const {sendProjectUpdateEmail} = require("../../utils/sendEmail");
 
 const addProject = async(req,res)=>{
     try{
