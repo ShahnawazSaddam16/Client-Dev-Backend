@@ -1,5 +1,6 @@
 const Projects = require("../../models/projects");
 const Users = require("../../models/users");
+const Settings = require("../../models/settings");
 const {sendProjectUpdateEmail} = require("../../utils/sendEmail");
 
 const addProject = async(req,res)=>{
@@ -121,7 +122,11 @@ const editProject = async(req,res)=>{
         await project.save();
 
         try{
-            await sendProjectUpdateEmail(project.email, project.projectName, project.status);
+            const settings = await Settings.findOne({userId: project.userId});
+
+            if(!settings || settings.emailtoggle !== false){
+                await sendProjectUpdateEmail(project.email, project.projectName, project.status);
+            }
         } catch(emailErr){
             console.error(emailErr);
         }
