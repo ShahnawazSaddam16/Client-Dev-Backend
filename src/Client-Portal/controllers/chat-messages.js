@@ -28,4 +28,39 @@ const sentMessage = async (req, res) => {
     }
 };
 
-module.exports = { sentMessage };
+const ChangeApproval = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const { approval, updateId } = req.body;
+
+        if (!["liked", "disliked"].includes(approval) || !updateId) {
+            return res.status(400).json({ success: false, message: "Invalid approval" });
+        }
+
+        const setFields = {
+            approval,
+            username: req.user.username,
+            email: req.user.email,
+        };
+
+        if (approval === "liked") {
+            setFields.message = "User approves the change";
+        }
+
+        await Messages.findOneAndUpdate(
+            { userId, updateId: String(updateId).trim(), approval: { $exists: true } },
+            {
+                $set: setFields,
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+
+        return res.status(200).json({ success: true, message: "Approval saved" });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: err.message || err });
+    }
+};
+
+module.exports = { sentMessage, ChangeApproval };
