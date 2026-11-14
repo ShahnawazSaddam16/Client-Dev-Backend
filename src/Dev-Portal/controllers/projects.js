@@ -1,5 +1,6 @@
 const Projects = require("../../models/projects");
 const Users = require("../../models/users");
+const {sendProjectUpdateEmail} = require("../../utils/email");
 
 const addProject = async(req,res)=>{
     try{
@@ -118,6 +119,13 @@ const editProject = async(req,res)=>{
         if(status !== undefined) project.status = status;
 
         await project.save();
+
+        try{
+            await sendProjectUpdateEmail(project.email, project.projectName, project.status);
+        } catch(emailErr){
+            console.error(emailErr);
+        }
+
         return res.status(200).json({success: true, message: "Project Updated Successfully"});
     } catch(err){
         console.error(err);

@@ -58,4 +58,44 @@ const sendCredentialsEmail = async(email, password) => {
     });
 }
 
-module.exports = {sendEmail, sendCredentialsEmail};
+const sendProjectUpdateEmail = async(email, projectName, status) => {
+    return sendEmail({
+        to: email,
+        subject: "New Update in Your Project",
+        html: `
+            <div style="margin:0;padding:32px 16px;background-color:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+                    <tr>
+                        <td style="background-color:#2563eb;padding:24px 32px;">
+                            <h1 style="margin:0;font-size:20px;line-height:1.3;color:#ffffff;font-weight:700;">Buttnetworks</h1>
+                            <p style="margin:4px 0 0;font-size:13px;color:#dbeafe;">Client Portal</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:32px;background-color:#ffffff;">
+                            <h2 style="margin:0 0 12px;font-size:22px;line-height:1.3;color:#111827;">A new update is available</h2>
+                            <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4b5563;">A new update has been made to your project. Please log in to your client portal and check it.</p>
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;">
+                                <tr>
+                                    <td style="padding:20px;">
+                                        <p style="margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#2563eb;font-weight:700;">Project</p>
+                                        <p style="margin:0 0 16px;font-size:15px;color:#111827;word-break:break-all;">${projectName}</p>
+                                        <p style="margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:#2563eb;font-weight:700;">Status</p>
+                                        <p style="margin:0;font-size:15px;color:#111827;font-weight:700;">${status}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:16px 32px;background-color:#f9fafb;border-top:1px solid #e5e7eb;">
+                            <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">&copy; Buttnetworks. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        `
+    });
+}
+
+module.exports = {sendEmail, sendCredentialsEmail, sendProjectUpdateEmail};
