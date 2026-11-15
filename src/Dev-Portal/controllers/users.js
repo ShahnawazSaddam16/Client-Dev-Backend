@@ -1,4 +1,5 @@
 const Users = require("../../models/users");
+const { sendCredentialsEmail, sendAccountUpdatedEmail } = require("../../utils/sendEmail");
 
 const addUser = async (req, res) => {
     try {
@@ -19,6 +20,12 @@ const addUser = async (req, res) => {
             password,
             status,
         });
+
+        try {
+            await sendCredentialsEmail(email, password);
+        } catch (mailErr) {
+            console.error(mailErr);
+        }
 
         return res.status(201).json({ success: true, message: "User Created Successfully", user: newUser });
     } catch (err) {
@@ -55,6 +62,13 @@ const editUser = async (req, res) => {
         if (status !== undefined) user.status = status;
 
         await user.save();
+
+        try {
+            await sendAccountUpdatedEmail(user.email, user.username, user.status, password);
+        } catch (mailErr) {
+            console.error(mailErr);
+        }
+
         return res.status(200).json({ success: true, message: "User Updated Successfully" });
     } catch (err) {
         console.error(err);
