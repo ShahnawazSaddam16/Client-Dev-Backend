@@ -39,6 +39,9 @@ const aiSuggestProject = async (req, res) => {
         const completion = await groq.chat.completions.create({
             model: "openai/gpt-oss-120b",
             temperature: 0.4,
+            top_p: 0.9,
+            max_completion_tokens: 2048,
+            reasoning_effort: "low",
             response_format: { type: "json_object" },
             messages: [
                 {
